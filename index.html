@@ -2,7 +2,6 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="G2Hujl-avg5Ewca0jrt3bZevbZj1k94B-sGTdG2P01E" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GoldFlytt — Guldsits för din flytt och städning</title>
 <meta name="description" content="GoldFlytt AB — flytthjälp, flyttstädning och kombopaket i Storstockholm. RUT-avdrag dras direkt. Boka din kostnadsfria offert idag.">
@@ -472,7 +471,9 @@
       <p class="mt-4 text-white/60 text-[15px]">Fyll i formuläret så återkommer vi inom 2 timmar på vardagar.</p>
     </div>
 
-    <form id="bookingForm" novalidate class="reveal mt-12 bg-white rounded-3xl p-6 sm:p-10 shadow-2xl">
+    <form id="bookingForm" novalidate action="https://formspree.io/f/moeadyel" method="POST" class="reveal mt-12 bg-white rounded-3xl p-6 sm:p-10 shadow-2xl">
+      <input type="hidden" name="_subject" value="Ny bokningsförfrågan – GoldFlytt.se">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
       <div class="grid sm:grid-cols-2 gap-5">
 
         <div class="field-invalid" data-field="name">
@@ -536,8 +537,10 @@
         </div>
       </div>
 
+      <p id="formError" role="alert" aria-live="assertive" class="hidden mt-6 text-[14px] text-[#B4442E] bg-[#FBEAE6] border border-[#B4442E]/25 rounded-xl px-4 py-3">Något gick fel och din förfrågan skickades inte. Kontrollera din internetanslutning och försök igen, eller ring oss direkt på <a href="tel:+46739010970" class="underline font-semibold">073-901 09 70</a>.</p>
+
       <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
-        <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-navy-950 hover:bg-navy-800 text-white font-semibold px-8 py-3.5 rounded-full transition-colors">
+        <button type="submit" id="submitBtn" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-navy-950 hover:bg-navy-800 text-white font-semibold px-8 py-3.5 rounded-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
           Skicka bokningsförfrågan
         </button>
         <a href="tel:+46739010970" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 border border-navy-900/15 text-navy-900 hover:border-gold-500 px-8 py-3.5 rounded-full transition-colors text-sm font-semibold">
@@ -719,6 +722,10 @@
   var modal = document.getElementById('confirmModal');
   var closeModalBtn = document.getElementById('closeModalBtn');
   var refNumber = document.getElementById('refNumber');
+  var submitBtn = document.getElementById('submitBtn');
+  var submitBtnDefaultText = submitBtn.textContent.trim();
+  var formError = document.getElementById('formError');
+  var FORMSPREE_URL = 'https://formspree.io/f/moeadyel';
 
   var phonePattern = /^(\+46|0)[\s\-]?7[\d\s\-]{7,12}$/;
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -768,27 +775,53 @@
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    formError.classList.add('hidden');
+
     if(!validate()){
       var firstError = form.querySelector('.field-invalid input, .field-invalid select, .field-invalid textarea');
       if(firstError) firstError.focus();
       return;
     }
 
-    var ref = 'GF-2026-' + Math.floor(10000 + Math.random() * 89999);
-    refNumber.textContent = ref;
+    var formData = new FormData(form);
 
-    if(typeof modal.showModal === 'function'){
-      modal.showModal();
-    } else {
-      modal.setAttribute('open','');
-    }
-    form.reset();
-    toggleBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-service') === 'flytt' ? 'true':'false'); });
-    service = 'flytt';
-    areaInput.value = 65; areaVal.textContent = 65;
-    distInput.value = 12; distVal.textContent = 12;
-    distWrap.style.display = 'block';
-    calculate();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Skickar…';
+
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(response){
+      if(response.ok){
+        var ref = 'GF-2026-' + Math.floor(10000 + Math.random() * 89999);
+        refNumber.textContent = ref;
+
+        if(typeof modal.showModal === 'function'){
+          modal.showModal();
+        } else {
+          modal.setAttribute('open','');
+        }
+
+        form.reset();
+        toggleBtns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-service') === 'flytt' ? 'true':'false'); });
+        service = 'flytt';
+        areaInput.value = 65; areaVal.textContent = 65;
+        distInput.value = 12; distVal.textContent = 12;
+        distWrap.style.display = 'block';
+        calculate();
+      } else {
+        formError.classList.remove('hidden');
+      }
+    })
+    .catch(function(){
+      formError.classList.remove('hidden');
+    })
+    .finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtnDefaultText;
+    });
   });
 
   closeModalBtn.addEventListener('click', function(){
@@ -805,4 +838,3 @@
 
 </body>
 </html>
-

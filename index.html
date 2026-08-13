@@ -72,9 +72,6 @@
   }
   .receipt::before{ top:-8px; }
   .receipt::after{ bottom:-8px; transform: rotate(180deg); }
-  @media (max-width: 767px){
-    .receipt{ --page-white:#FFFFFF; }
-  }
 
   .receipt-row{ border-top: 1px dashed rgba(15,29,48,0.22); }
   .receipt-row:first-child{ border-top:none; }
@@ -142,7 +139,7 @@
 <a href="#innehall" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:bg-navy-950 focus:text-gold-300 focus:px-4 focus:py-2 focus:rounded-md">Hoppa till innehåll</a>
 
 <!-- ===== HEADER ===== -->
-<header class="sticky top-0 z-40 bg-navy-950/95 backdrop-blur border-b border-white/10">
+<header id="top" class="sticky top-0 z-40 bg-navy-950/95 backdrop-blur border-b border-white/10">
   <div class="max-w-7xl mx-auto px-5 sm:px-8">
     <div class="flex items-center justify-between h-[72px]">
       <a href="#top" class="flex items-center gap-2.5 shrink-0">
@@ -185,7 +182,7 @@
   </div>
 </header>
 
-<main id="innehall" id="top">
+<main id="innehall">
 
 <!-- ===== HERO ===== -->
 <section class="relative bg-navy-950 overflow-hidden">
@@ -210,20 +207,20 @@
           Ring 073-901 09 70
         </a>
       </div>
-      <dl class="mt-12 grid grid-cols-3 gap-6 max-w-md">
+      <dl class="mt-12 grid grid-cols-3 gap-4 sm:gap-6 max-w-md">
         <div>
           <dt class="sr-only">Kundbetyg</dt>
-          <dd class="font-display text-3xl text-gold-300 tabular">4,9</dd>
+          <dd class="font-display text-2xl sm:text-3xl text-gold-300 tabular">4,9</dd>
           <dd class="text-white/50 text-sm mt-0.5">★ snittbetyg</dd>
         </div>
         <div>
           <dt class="sr-only">Genomförda uppdrag</dt>
-          <dd class="font-display text-3xl text-gold-300 tabular">6 200+</dd>
+          <dd class="font-display text-2xl sm:text-3xl text-gold-300 tabular">6 200+</dd>
           <dd class="text-white/50 text-sm mt-0.5">avslutade uppdrag</dd>
         </div>
         <div>
           <dt class="sr-only">RUT-avdrag</dt>
-          <dd class="font-display text-3xl text-gold-300 tabular">−50%</dd>
+          <dd class="font-display text-2xl sm:text-3xl text-gold-300 tabular">−50%</dd>
           <dd class="text-white/50 text-sm mt-0.5">med RUT-avdrag</dd>
         </div>
       </dl>
@@ -272,7 +269,7 @@
           <li class="flex gap-2"><span class="text-gold-500">✓</span> Full försäkring under transport</li>
           <li class="flex gap-2"><span class="text-gold-500">✓</span> Fast pris, inga dolda avgifter</li>
         </ul>
-        <p class="font-mono text-sm text-gold-600">Från 1 495 kr efter RUT</p>
+        <p class="font-mono text-sm text-gold-600">Från 1 330 kr efter RUT</p>
       </article>
 
       <article class="reveal group rounded-2xl border border-navy-900/8 p-8 hover:border-gold-400/50 hover:shadow-card transition-all">
@@ -286,7 +283,7 @@
           <li class="flex gap-2"><span class="text-gold-500">✓</span> Miljömärkta rengöringsmedel</li>
           <li class="flex gap-2"><span class="text-gold-500">✓</span> Ugn, kylskåp och fönster ingår</li>
         </ul>
-        <p class="font-mono text-sm text-gold-600">Från 995 kr efter RUT</p>
+        <p class="font-mono text-sm text-gold-600">Från 645 kr efter RUT</p>
       </article>
 
       <article class="reveal group rounded-2xl border-2 border-gold-400 p-8 relative shadow-card">
@@ -301,7 +298,7 @@
           <li class="flex gap-2"><span class="text-gold-500">✓</span> 7% paketrabatt</li>
           <li class="flex gap-2"><span class="text-gold-500">✓</span> Besiktningsgaranti ingår</li>
         </ul>
-        <p class="font-mono text-sm text-gold-600">Från 2 490 kr efter RUT</p>
+        <p class="font-mono text-sm text-gold-600">Från 1 837 kr efter RUT</p>
       </article>
     </div>
   </div>
@@ -454,7 +451,7 @@
       </figure>
       <figure class="reveal rounded-2xl bg-navy-950 p-7">
         <div class="flex gap-0.5 text-gold-400 mb-4" aria-label="4,5 av 5 stjärnor">★★★★☆</div>
-        <blockquote class="text-white/85 text-[15px] leading-relaxed">"Kombopaketet var värt varje krona — sluppa samordna två olika firmor. Enda minus var att lastbilen kom 20 minuter sent."</blockquote>
+        <blockquote class="text-white/85 text-[15px] leading-relaxed">"Kombopaketet var värt varje krona — vi slapp samordna två olika firmor. Enda minus var att lastbilen kom 20 minuter sent."</blockquote>
         <figcaption class="mt-5 text-white/50 text-[13px]">Familjen Nilsson · Uppsala</figcaption>
       </figure>
     </div>
@@ -482,27 +479,27 @@
       <input type="hidden" id="calcFieldTotal" name="calc_att_betala" value="">
       <div class="grid sm:grid-cols-2 gap-5">
 
-        <div class="field-invalid" data-field="name">
+        <div data-field="name">
           <label for="fName" class="block text-sm font-semibold text-navy-950 mb-1.5">Namn</label>
-          <input type="text" id="fName" name="name" autocomplete="name" placeholder="För- och efternamn" aria-describedby="err-name" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
+          <input type="text" id="fName" name="name" autocomplete="name" placeholder="För- och efternamn" required aria-describedby="err-name" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
           <p id="err-name" class="field-error text-[13px] text-[#B4442E] mt-1.5">Ange ditt namn (minst 2 tecken).</p>
         </div>
 
-        <div class="field-invalid" data-field="phone">
+        <div data-field="phone">
           <label for="fPhone" class="block text-sm font-semibold text-navy-950 mb-1.5">Telefon</label>
-          <input type="tel" id="fPhone" name="phone" autocomplete="tel" placeholder="073-123 45 67" aria-describedby="err-phone" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
+          <input type="tel" id="fPhone" name="phone" autocomplete="tel" placeholder="073-123 45 67" required aria-describedby="err-phone" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
           <p id="err-phone" class="field-error text-[13px] text-[#B4442E] mt-1.5">Ange ett giltigt svenskt telefonnummer.</p>
         </div>
 
-        <div class="field-invalid" data-field="email">
+        <div data-field="email">
           <label for="fEmail" class="block text-sm font-semibold text-navy-950 mb-1.5">E-post</label>
-          <input type="email" id="fEmail" name="email" autocomplete="email" placeholder="namn@exempel.se" aria-describedby="err-email" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
+          <input type="email" id="fEmail" name="email" autocomplete="email" placeholder="namn@exempel.se" required aria-describedby="err-email" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
           <p id="err-email" class="field-error text-[13px] text-[#B4442E] mt-1.5">Ange en giltig e-postadress.</p>
         </div>
 
-        <div class="field-invalid" data-field="service">
+        <div data-field="service">
           <label for="fService" class="block text-sm font-semibold text-navy-950 mb-1.5">Tjänst</label>
-          <select id="fService" name="service" aria-describedby="err-service" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors bg-white">
+          <select id="fService" name="service" required aria-describedby="err-service" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors bg-white">
             <option value="">Välj tjänst</option>
             <option value="Flytthjälp">Flytthjälp</option>
             <option value="Flytt- och hemstädning">Flytt- och hemstädning</option>
@@ -517,15 +514,15 @@
           <input type="date" id="fDate" name="date" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
         </div>
 
-        <div class="field-invalid" data-field="area">
+        <div data-field="area">
           <label for="fArea" class="block text-sm font-semibold text-navy-950 mb-1.5">Boyta (m²)</label>
-          <input type="number" id="fArea" name="area" min="1" max="500" placeholder="65" aria-describedby="err-area" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
+          <input type="number" id="fArea" name="area" min="1" max="500" placeholder="65" required aria-describedby="err-area" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
           <p id="err-area" class="field-error text-[13px] text-[#B4442E] mt-1.5">Ange en boyta i kvadratmeter.</p>
         </div>
 
-        <div class="sm:col-span-2 field-invalid" data-field="address">
+        <div class="sm:col-span-2" data-field="address">
           <label for="fAddress" class="block text-sm font-semibold text-navy-950 mb-1.5">Adress (från / till)</label>
-          <input type="text" id="fAddress" name="address" placeholder="Från: Götgatan 5, Stockholm — Till: Storgatan 2, Solna" aria-describedby="err-address" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
+          <input type="text" id="fAddress" name="address" placeholder="Från: Götgatan 5, Stockholm — Till: Storgatan 2, Solna" required aria-describedby="err-address" class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors">
           <p id="err-address" class="field-error text-[13px] text-[#B4442E] mt-1.5">Ange adress för uppdraget.</p>
         </div>
 
@@ -534,9 +531,9 @@
           <textarea id="fMessage" name="message" rows="3" placeholder="T.ex. hiss saknas, piano ska flyttas, önskad tid på dagen..." class="w-full rounded-xl border border-navy-900/15 px-4 py-3 text-[15px] focus:border-gold-500 transition-colors resize-none"></textarea>
         </div>
 
-        <div class="sm:col-span-2 field-invalid" data-field="consent">
+        <div class="sm:col-span-2" data-field="consent">
           <label class="flex items-start gap-3 text-[14px] text-navy-900/75 cursor-pointer">
-            <input type="checkbox" id="fConsent" name="consent" aria-describedby="err-consent" class="mt-0.5 w-4 h-4 accent-[#C6A15B]">
+            <input type="checkbox" id="fConsent" name="consent" required aria-describedby="err-consent" class="mt-0.5 w-4 h-4 accent-[#C6A15B]">
             <span>Jag godkänner att GoldFlytt kontaktar mig angående min förfrågan och hanterar mina uppgifter enligt integritetspolicyn.</span>
           </label>
           <p id="err-consent" class="field-error text-[13px] text-[#B4442E] mt-1.5 ml-7">Du behöver godkänna villkoren för att skicka.</p>
@@ -606,7 +603,7 @@
 
   <div class="max-w-7xl mx-auto px-5 sm:px-8 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-3 text-[13px] text-white/35">
     <p>© 2026 GoldFlytt AB. Alla rättigheter förbehållna.</p>
-    <p>Priserna på denna sida är demonstrationsvärden och utgör inte ett bindande erbjudande.</p>
+    <p>Alla priser är preliminära uppskattningar — exakt pris bekräftas alltid innan bokning.</p>
   </div>
 </footer>
 
@@ -739,6 +736,12 @@
 
   var d = new Date();
   document.getElementById('receiptDate').textContent = d.toLocaleDateString('sv-SE', {year:'numeric', month:'long', day:'numeric'});
+
+  var fDate = document.getElementById('fDate');
+  if(fDate){
+    var todayIso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    fDate.setAttribute('min', todayIso);
+  }
 
   calculate();
 

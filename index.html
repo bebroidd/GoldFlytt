@@ -474,6 +474,12 @@
     <form id="bookingForm" novalidate action="https://formspree.io/f/moeadyel" method="POST" class="reveal mt-12 bg-white rounded-3xl p-6 sm:p-10 shadow-2xl">
       <input type="hidden" name="_subject" value="Ny bokningsförfrågan – GoldFlytt.se">
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+      <input type="hidden" id="calcFieldService" name="calc_tjanst" value="">
+      <input type="hidden" id="calcFieldArea" name="calc_boyta" value="">
+      <input type="hidden" id="calcFieldDistance" name="calc_strecka" value="">
+      <input type="hidden" id="calcFieldSubtotal" name="calc_arbetskostnad" value="">
+      <input type="hidden" id="calcFieldRut" name="calc_rut_avdrag" value="">
+      <input type="hidden" id="calcFieldTotal" name="calc_att_betala" value="">
       <div class="grid sm:grid-cols-2 gap-5">
 
         <div class="field-invalid" data-field="name">
@@ -671,15 +677,32 @@
   var rcpRut = document.getElementById('rcpRut');
   var rcpTotal = document.getElementById('rcpTotal');
 
+  var calcFieldService = document.getElementById('calcFieldService');
+  var calcFieldArea = document.getElementById('calcFieldArea');
+  var calcFieldDistance = document.getElementById('calcFieldDistance');
+  var calcFieldSubtotal = document.getElementById('calcFieldSubtotal');
+  var calcFieldRut = document.getElementById('calcFieldRut');
+  var calcFieldTotal = document.getElementById('calcFieldTotal');
+
   function fmt(n){
     return Math.round(n).toLocaleString('sv-SE') + ' kr';
+  }
+
+  function syncCalcFieldsToForm(area, distance, subtotal, rut, total){
+    if(!calcFieldArea) return;
+    calcFieldService.value = serviceLabels[service];
+    calcFieldArea.value = area + ' m²';
+    calcFieldDistance.value = (service === 'stad') ? '\u2013' : (distance + ' km');
+    calcFieldSubtotal.value = fmt(subtotal);
+    calcFieldRut.value = '\u2212' + fmt(rut);
+    calcFieldTotal.value = fmt(total);
   }
 
   function calculate(){
     var area = parseInt(areaInput.value, 10) || 0;
     var distance = parseInt(distInput.value, 10) || 0;
 
-    var flyttCost = 1490 + area * 42 + distance * 14;
+    var flyttCost = 1850 + area * 54 + distance * 20;
     var stadCost = Math.max(1290, area * 54);
 
     var subtotal = 0;
@@ -697,6 +720,8 @@
     rcpSubtotal.textContent = fmt(subtotal);
     rcpRut.textContent = '\u2212' + fmt(rut);
     rcpTotal.textContent = fmt(total);
+
+    syncCalcFieldsToForm(area, distance, subtotal, rut, total);
   }
 
   areaInput.addEventListener('input', function(){ areaVal.textContent = areaInput.value; calculate(); });
@@ -782,6 +807,8 @@
       if(firstError) firstError.focus();
       return;
     }
+
+    calculate();
 
     var formData = new FormData(form);
 
